@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dieta + Controle de Água</title>
+  <title>Dieta + Água + Ciclo</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -55,7 +55,7 @@
       border-bottom: 1px dashed #ffb6d9;
     }
 
-    .water-tracker {
+    .water-tracker, .menstruation-tracker {
       text-align: center;
       padding: 20px;
       background: #ffe6f0;
@@ -119,6 +119,15 @@
       background: #b32468;
     }
 
+    input[type=number] {
+      padding: 5px;
+      font-size: 16px;
+      width: 60px;
+      border-radius: 8px;
+      border: 2px solid #d63384;
+      margin-right: 10px;
+    }
+
     .confetti, .heart, .flower {
       position: fixed;
       top: 0;
@@ -165,7 +174,7 @@
   </style>
 </head>
 <body>
-  <header>🌸 Dieta + Controle Diário de Água 🌸</header>
+  <header>🌸 Dieta + Controle de Água + Ciclo 🌸</header>
 
   <main>
     <!-- Contador de Água -->
@@ -181,6 +190,19 @@
       <div class="progress">0 / 2000 ml</div>
       <button id="resetBtn">🔄 Zerar</button>
       <audio id="applause" src="https://www.soundjay.com/human/applause-01.mp3"></audio>
+    </section>
+
+    <!-- Marcador de Menstruação -->
+    <section class="menstruation-tracker">
+      <h2>Marcador de Menstruação</h2>
+      <label for="menstruationDay">Dia:</label>
+      <input type="number" id="menstruationDay" min="1" max="31" placeholder="Dia">
+
+      <label for="menstruationMonth">Mês:</label>
+      <input type="number" id="menstruationMonth" min="1" max="12" placeholder="Mês">
+
+      <button id="saveMenstruation">Salvar</button>
+      <p id="menstruationInfo"></p>
     </section>
 
     <!-- Dieta da Semana -->
@@ -271,6 +293,7 @@
   </main>
 
   <script>
+    // Contador de água
     const resetBtn = document.getElementById("resetBtn");
     let filledCount = JSON.parse(localStorage.getItem("filledCount")) || 0;
 
@@ -330,6 +353,7 @@
             filledCount++;
           }
           localStorage.setItem("filledCount", JSON.stringify(filledCount));
+          localStorage.setItem("lastReset", localStorage.getItem("lastReset") || new Date().getTime());
           updateProgress(bottles);
         });
       });
@@ -337,13 +361,51 @@
       updateProgress(bottles);
     }
 
+    // Reset manual
     resetBtn.addEventListener("click", () => {
       filledCount = 0;
       localStorage.setItem("filledCount", JSON.stringify(filledCount));
+      localStorage.setItem("lastReset", new Date().getTime());
       createBottles();
     });
 
-    window.onload = createBottles;
+    // Reset automático 24h
+    window.onload = () => {
+      const lastReset = JSON.parse(localStorage.getItem("lastReset")) || 0;
+      const now = new Date().getTime();
+      if(now - lastReset >= 24*60*60*1000) {
+        filledCount = 0;
+        localStorage.setItem("filledCount", JSON.stringify(filledCount));
+        localStorage.setItem("lastReset", now);
+      }
+      createBottles();
+    }
+
+    // Marcador de menstruação
+    const menstruationDayInput = document.getElementById("menstruationDay");
+    const menstruationMonthInput = document.getElementById("menstruationMonth");
+    const saveMenstruationBtn = document.getElementById("saveMenstruation");
+    const menstruationInfo = document.getElementById("menstruationInfo");
+
+    const savedDay = localStorage.getItem("menstruationDay");
+    const savedMonth = localStorage.getItem("menstruationMonth");
+    if(savedDay && savedMonth) {
+      menstruationInfo.textContent = `Seu ciclo começou em: ${savedDay}/${savedMonth}`;
+      menstruationDayInput.value = savedDay;
+      menstruationMonthInput.value = savedMonth;
+    }
+
+    saveMenstruationBtn.addEventListener("click", () => {
+      const day = menstruationDayInput.value;
+      const month = menstruationMonthInput.value;
+      if(day >=1 && day <=31 && month >=1 && month <=12) {
+        localStorage.setItem("menstruationDay", day);
+        localStorage.setItem("menstruationMonth", month);
+        menstruationInfo.textContent = `Seu ciclo começou em: ${day}/${month}`;
+      } else {
+        alert("Digite um dia (1-31) e um mês (1-12) válidos.");
+      }
+    });
   </script>
 </body>
 </html>
