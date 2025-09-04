@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dieta + Controle de Água</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #ffe6f0;
+      color: #4a004e;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: #ff99cc;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 0 0 20px 20px;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    section {
+      background: #fff0f6;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #d63384;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 5px 0;
+      border-bottom: 1px dashed #ffb6d9;
+    }
+
+    .water-tracker {
+      text-align: center;
+      padding: 20px;
+      background: #ffe6f0;
+      border-radius: 20px;
+      margin-top: 30px;
+      position: relative;
+    }
+
+    .bottles {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .bottle {
+      width: 60px;
+      height: 120px;
+      border: 3px solid #d63384;
+      border-radius: 15px;
+      position: relative;
+      cursor: pointer;
+      background: linear-gradient(to top, #ffffff 50%, #ffe6f0 50%);
+      transition: background 0.3s;
+    }
+
+    .bottle.filled {
+      background: linear-gradient(to top, #ff66b2 100%, #ffe6f0 0%);
+    }
+
+    .bottle::after {
+      content: "500ml";
+      position: absolute;
+      bottom: -20px;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: #4a004e;
+    }
+
+    .progress {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    button {
+      background: #d63384;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #b32468;
+    }
+
+    .confetti, .heart, .flower {
+      position: fixed;
+      top: 0;
+      opacity: 0.8;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .confetti {
+      width: 10px;
+      height: 10px;
+      background-color: #ff69b4;
+      animation: fall 2s linear forwards;
+    }
+
+    .heart {
+      font-size: 20px;
+      color: #ff1493;
+      animation: fallHeart 2s linear forwards;
+    }
+
+    .flower {
+      font-size: 20px;
+      color: #ff66b2;
+      animation: fall 2s linear forwards;
+    }
+
+    @keyframes fall {
+      0% {transform: translateY(0) rotate(0deg);}
+      100% {transform: translateY(400px) rotate(360deg); opacity: 0;}
+    }
+
+    @keyframes fallHeart {
+      0% {transform: translateY(0) rotate(0deg);}
+      100% {transform: translateY(400px) rotate(720deg); opacity: 0;}
+    }
+
+    @media (max-width: 600px) {
+      .bottle {
+        width: 50px;
+        height: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>🌸 Dieta + Controle Diário de Água 🌸</header>
+
+  <main>
+    <!-- Contador de Água -->
+    <section class="water-tracker">
+      <h2>Meta de Água</h2>
+      <p>Meta diária: <strong>2 litros (4 garrafas de 500 ml)</strong></p>
+      <div class="bottles">
+        <div class="bottle" data-index="1"></div>
+        <div class="bottle" data-index="2"></div>
+        <div class="bottle" data-index="3"></div>
+        <div class="bottle" data-index="4"></div>
+      </div>
+      <div class="progress">0 / 2000 ml</div>
+      <button id="resetBtn">🔄 Zerar</button>
+      <audio id="applause" src="https://www.soundjay.com/human/applause-01.mp3"></audio>
+    </section>
+
+    <!-- Dieta da Semana -->
+    <section>
+      <h2>Segunda-feira</h2>
+      <ul>
+        <li>Café: 1 ovo mexido + 1 fatia de pão integral + leite desnatado</li>
+        <li>Lanche: 1 banana</li>
+        <li>Almoço: arroz, feijão, frango grelhado, salada alface e tomate</li>
+        <li>Lanche: mamão</li>
+        <li>Jantar: 2 ovos cozidos + cenoura e pepino</li>
+        <li>Ceia: água com limão</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Terça-feira</h2>
+      <ul>
+        <li>Café: pão francês + ovo cozido + suco natural</li>
+        <li>Lanche: maçã</li>
+        <li>Almoço: arroz, feijão, ovo mexido, salada repolho</li>
+        <li>Lanche: banana</li>
+        <li>Jantar: frango desfiado + couve e tomate</li>
+        <li>Ceia: leite desnatado</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Quarta-feira</h2>
+      <ul>
+        <li>Café: pão integral + ovo mexido + leite desnatado</li>
+        <li>Lanche: fruta da estação</li>
+        <li>Almoço: arroz, feijão, frango grelhado, abobrinha cozida</li>
+        <li>Lanche: mamão com aveia</li>
+        <li>Jantar: 2 ovos mexidos + alface e pepino</li>
+        <li>Ceia: água com limão</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Quinta-feira</h2>
+      <ul>
+        <li>Café: pão francês + ovo cozido + suco natural</li>
+        <li>Lanche: laranja</li>
+        <li>Almoço: arroz, feijão, sardinha, salada tomate e repolho</li>
+        <li>Lanche: banana</li>
+        <li>Jantar: frango desfiado + couve</li>
+        <li>Ceia: chá de camomila</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Sexta-feira</h2>
+      <ul>
+        <li>Café: ovo mexido + pão integral + leite desnatado</li>
+        <li>Lanche: fruta da estação</li>
+        <li>Almoço: arroz, feijão, ovo cozido, salada beterraba e alface</li>
+        <li>Lanche: mamão</li>
+        <li>Jantar: frango grelhado + abobrinha e cenoura</li>
+        <li>Ceia: água com limão</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Sábado</h2>
+      <ul>
+        <li>Café: pão francês + ovo mexido + suco natural</li>
+        <li>Lanche: maçã</li>
+        <li>Almoço: arroz, feijão, frango grelhado, salada alface e tomate</li>
+        <li>Lanche: banana</li>
+        <li>Jantar: 2 ovos cozidos + couve e cenoura</li>
+        <li>Ceia: leite desnatado</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Domingo</h2>
+      <ul>
+        <li>Café: pão integral + ovo mexido + leite desnatado</li>
+        <li>Lanche: fruta da estação</li>
+        <li>Almoço: arroz, feijão, carne moída magra, salada repolho e tomate</li>
+        <li>Lanche: mamão</li>
+        <li>Jantar: frango desfiado + alface, pepino e cenoura</li>
+        <li>Ceia: chá de erva-doce</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <script>
+    const resetBtn = document.getElementById("resetBtn");
+    let filledCount = JSON.parse(localStorage.getItem("filledCount")) || 0;
+
+    function updateProgress(bottles) {
+      const total = filledCount * 500;
+      document.querySelector(".progress").textContent = `${total} / 2000 ml`;
+      if(filledCount === bottles.length) {
+        showAnimation();
+      }
+    }
+
+    function showAnimation() {
+      const applause = document.getElementById("applause");
+      applause.currentTime = 0;
+      applause.play();
+
+      for(let i=0; i<30; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 70%)`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 2000);
+
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.textContent = '❤️';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 2000);
+
+        const flower = document.createElement('div');
+        flower.classList.add('flower');
+        flower.style.left = Math.random() * window.innerWidth + 'px';
+        flower.textContent = '🌸';
+        document.body.appendChild(flower);
+        setTimeout(() => flower.remove(), 2000);
+      }
+    }
+
+    function createBottles() {
+      let bottles = document.querySelectorAll(".bottle");
+      bottles.forEach((bottle, index) => {
+        bottle.classList.remove("filled");
+        if(index < filledCount) bottle.classList.add("filled");
+        bottle.replaceWith(bottle.cloneNode(true));
+      });
+
+      bottles = document.querySelectorAll(".bottle");
+      bottles.forEach((bottle, index) => {
+        bottle.addEventListener("click", () => {
+          if(bottle.classList.contains("filled")) {
+            bottle.classList.remove("filled");
+            filledCount--;
+          } else {
+            bottle.classList.add("filled");
+            filledCount++;
+          }
+          localStorage.setItem("filledCount", JSON.stringify(filledCount));
+          updateProgress(bottles);
+        });
+      });
+
+      updateProgress(bottles);
+    }
+
+    resetBtn.addEventListener("click", () => {
+      filledCount = 0;
+      localStorage.setItem("filledCount", JSON.stringify(filledCount));
+      createBottles();
+    });
+
+    window.onload = createBottles;
+  </script>
+</body>
+</html>
